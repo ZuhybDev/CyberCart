@@ -1,10 +1,23 @@
 import express from "express";
+import {ENV} from "../config/env.js";
+import path from "path";
 
 const app = express();
+const __dirname = path.resolve()
 
 app.get("/api", (req, res) => {
     res.status(200).send("Welcome CyberCart");
 })
 
+if(ENV.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "../admin/dist")));
+}
 
-app.listen(3000, () => console.log("Server started on port 3000"));
+app.get("/{*path}", (req, res) => {
+    res.sendFile(path.join(__dirname, "../admin" ,"/dist","/index.html"));
+})
+
+
+
+
+app.listen(ENV.PORT, () => console.log("Server started on port 3000"));
