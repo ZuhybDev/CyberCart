@@ -1,23 +1,27 @@
 import express from "express";
-import {ENV} from "../config/env.js";
+import { ENV } from "../config/env.js";
 import path from "path";
+import { connectionDB } from "../config/db.js";
+import { clerkMiddleware } from "@clerk/express";
 
 const app = express();
-const __dirname = path.resolve()
+const __dirname = path.resolve();
+
+app.use(clerkMiddleware());
 
 app.get("/api", (req, res) => {
-    res.status(200).send("Welcome CyberCart");
-})
+  res.status(200).send("Welcome CyberCart");
+});
 
-if(ENV.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../admin/dist")));
+if (ENV.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../admin/dist")));
 }
 
 app.get("/{*path}", (req, res) => {
-    res.sendFile(path.join(__dirname, "../admin" ,"/dist","/index.html"));
-})
+  res.sendFile(path.join(__dirname, "../admin", "/dist", "/index.html"));
+});
 
-
-
-
-app.listen(ENV.PORT, () => console.log("Server started on port 3000"));
+app.listen(ENV.PORT, () => {
+  console.log("Server started on port 3000");
+  connectionDB();
+});
