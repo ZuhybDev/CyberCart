@@ -18,5 +18,8 @@
     "express": "^5.1.0",
     "inngest": "^3.46.0",
     "mongoose": "^8.19.3"
+  },
+  "devDependencies": {
+    "prettier": "3.7.4"
   }
 }

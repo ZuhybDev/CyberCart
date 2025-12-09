@@ -1,12 +1,12 @@
-import { Inngest } from "inngest";
-import { connectionDB } from "./db.js";
-import { User } from "../models/user.model.js";
+import { Inngest } from 'inngest';
+import { connectionDB } from './db.js';
+import { User } from '../models/user.model.js';
 
-export const inngest = new Inngest({ id: "cyberCart" });
+export const inngest = new Inngest({ id: 'cyberCart' });
 
 const syncUser = inngest.createFunction(
-  { id: "sync-user" },
-  { event: "clerk/user.created" },
+  { id: 'sync-user' },
+  { event: 'clerk/user.created' },
 
   async ({ event }) => {
     await connectionDB();
@@ -24,8 +24,8 @@ const syncUser = inngest.createFunction(
 );
 
 const deleteUserFromDB = inngest.createFunction(
-  { id: "delete-user-from-db" },
-  { event: "clerk/user.deleted" },
+  { id: 'delete-user-from-db' },
+  { event: 'clerk/user.deleted' },
   async ({ event }) => {
     await connectionDB();
 
