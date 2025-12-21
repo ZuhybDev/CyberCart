@@ -1,7 +1,7 @@
 import { product } from "../models/product.model.js";
 import cloudinary from "../config/cloudinary.js";
 
-export const createProducts = async (req, res) => {
+export const createProduct = async (req, res) => {
   try {
     const { name, description, price, stock, cateogry } = req.body;
 
