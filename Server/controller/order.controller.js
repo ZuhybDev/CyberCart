@@ -1,5 +1,6 @@
 import { Order } from "../models/order.model.js";
 import { product } from "../models/product.model.js";
+import { review } from "../models/review.model.js";
 
 export const createOrder = async (req, res) => {
   try {
@@ -19,13 +20,13 @@ export const createOrder = async (req, res) => {
       }
 
       if (productFromDb.stock < items.quantity) {
-        res
+        return res
           .status(400)
           .json({ message: `Insufficient stock for ${productFromDb.name}` });
       }
     }
 
-    const order = Order.create({
+    const order = await Order.create({
       clerkId: user.clerkId,
       orderItems,
       shippingAddress,
@@ -55,10 +56,10 @@ export const getUserOrders = async (req, res) => {
 
     const orderWithReviewStatus = await Promise.all(
       orders.map(async (order) => {
-        const review = await review.findOne({ orderId: order._id });
+        const hasReview = await review.findOne({ orderId: order._id });
         return {
           ...order.toObject(),
-          hasReviewed: !!review,
+          hasReviewed: !!hasReview,
         };
       })
     );
