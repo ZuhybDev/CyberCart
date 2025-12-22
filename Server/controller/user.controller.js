@@ -71,10 +71,6 @@ export const updateAddress = async (req, res) => {
 
     const address = user.address.id(addressId);
 
-    if (!address) {
-      res.status(404).json({ message: "address not found" });
-    }
-
     // if this is set to default unset all other addresses from default
     if (isDefault) {
       user.address.forEach((addr) => {
@@ -99,7 +95,7 @@ export const updateAddress = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-export const deleteAdress = async (req, res) => {
+export const deleteAddress = async (req, res) => {
   try {
     const { addressId } = req.params;
     const user = req.user;
@@ -139,7 +135,7 @@ export const addWishList = async (req, res) => {
 };
 export const removeWishList = async (req, res) => {
   try {
-    const { productId } = user.params;
+    const { productId } = req.params;
     const user = req.user;
 
     if (!productId) {
@@ -149,9 +145,9 @@ export const removeWishList = async (req, res) => {
     user.wishList.pull(productId);
 
     await user.save();
-    res.status(201).json({ message: "Product removed fro wishlist" });
+    res.status(201).json({ message: "Product removed from wishlist" });
   } catch (error) {
-    console.error({ message: "Error in remove wishlish controller", error });
+    console.error({ message: "Error in remove wishlist controller", error });
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -162,7 +158,7 @@ export const getAllwishList = async (req, res) => {
     const user = await User.findById(req.user._id).populate("wishList");
     res.status(200).json({ wishList: user.wishList });
   } catch (error) {
-    console.error({ message: "Error in get all wishlish controller", error });
+    console.error({ message: "Error in get all wishlist controller", error });
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

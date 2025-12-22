@@ -2,7 +2,7 @@ import {
   addAddress,
   getAllAddresses,
   updateAddress,
-  deleteAdress,
+  deleteAddress,
   addWishList,
   removeWishList,
   getAllwishList,
@@ -17,7 +17,7 @@ router.use(protectRoute);
 router.post("/addresses", addAddress);
 router.get("/addresses", getAllAddresses);
 router.put("/addresses/:addressId", updateAddress);
-router.delete("/addresses/:addressId", deleteAdress);
+router.delete("/addresses/:addressId", deleteAddress);
 
 //wishlist
 router.post("/wishlist", addWishList);
