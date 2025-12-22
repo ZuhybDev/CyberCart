@@ -8,6 +8,7 @@ import { functions, inngest } from "../config/innges.js";
 
 import adminRoute from "../routes/admin.route.js";
 import usersRoute from "../routes/users.route.js";
+import ordersRoute from "../routes/orders.route.js";
 
 const app = express();
 //clerk
@@ -22,6 +23,9 @@ app.use("/api/inngest", serve({ client: inngest, functions }));
 app.use("/api/admin", adminRoute);
 //users route
 app.use("/api/users", usersRoute);
+
+// orders route
+app.use("/api/orders", ordersRoute);
 
 app.get("/api", (req, res) => {
   res.status(200).send("Welcome CyberCart");
