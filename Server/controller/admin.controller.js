@@ -70,7 +70,7 @@ export const updateProduct = async (req, res) => {
 
     if (name) product.name = name;
     if (description) product.description = description;
-    if (price) product.price = parseInt(price);
+    if (price !== "undefined") product.price = parseInt(price);
     if (stock !== "undefined") product.stock = parseInt(stock);
     if (cateogry) product.cateogry = cateogry;
 
