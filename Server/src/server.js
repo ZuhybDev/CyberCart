@@ -1,6 +1,5 @@
 import express from "express";
 import { ENV } from "../config/env.js";
-import path from "path";
 import { connectionDB } from "../config/db.js";
 import { clerkMiddleware } from "@clerk/express";
 import { serve } from "inngest/express";
@@ -9,6 +8,9 @@ import { functions, inngest } from "../config/innges.js";
 import adminRoute from "../routes/admin.route.js";
 import usersRoute from "../routes/users.route.js";
 import ordersRoute from "../routes/orders.route.js";
+
+import productRoute from "../routes/products.route.js";
+import reviewsRoute from "../routes/reviews.route.js";
 
 const app = express();
 //clerk
@@ -26,6 +28,12 @@ app.use("/api/users", usersRoute);
 
 // orders route
 app.use("/api/orders", ordersRoute);
+
+//reviews
+app.use("/api/reviews", reviewsRoute);
+
+//products
+app.use("/api/products", productRoute);
 
 app.get("/api", (req, res) => {
   res.status(200).send("Welcome CyberCart");

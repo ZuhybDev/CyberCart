@@ -52,7 +52,7 @@ export const getUserOrders = async (req, res) => {
       .populate("orderItems.product")
       .sort({ createdAt: -1 });
 
-    // chech if the order has been reviewed
+    // check if the order has been reviewed
 
     const orderWithReviewStatus = await Promise.all(
       orders.map(async (order) => {
@@ -61,10 +61,10 @@ export const getUserOrders = async (req, res) => {
           ...order.toObject(),
           hasReviewed: !!hasReview,
         };
-      })
+      }),
     );
 
-    res.status(200).json({ order: orderWithReviewStatus });
+    res.status(200).json({ userOrder: orderWithReviewStatus });
   } catch (error) {
     console.error({
       message: "Error fetching order from order controller",
