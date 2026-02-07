@@ -1,7 +1,10 @@
-import { product } from "models/product.model.js";
+import { product } from "../models/product.model.js";
 import cloudinary from "../config/cloudinary.js";
+import { Order } from "../models/order.model.js";
+import { User } from "../models/user.model.js";
 
-export const createProducts = async (req, res) => {
+// products func
+export const createProduct = async (req, res) => {
   try {
     const { name, description, price, stock, cateogry } = req.body;
 
@@ -51,7 +54,7 @@ export const getAllProducts = async (_, res) => {
     const allProducts = await product.find.sort({ createdAt: -1 });
     res.status(201).json(allProducts);
   } catch (error) {
-    res.status(500).json({ message: "Internal server Error" });
+    res.status(500).json({ message: "Internal server Error", err: error });
   }
 };
 export const updateProduct = async (req, res) => {
@@ -67,7 +70,7 @@ export const updateProduct = async (req, res) => {
 
     if (name) product.name = name;
     if (description) product.description = description;
-    if (price) product.price = parseInt(price);
+    if (price !== "undefined") product.price = parseInt(price);
     if (stock !== "undefined") product.stock = parseInt(stock);
     if (cateogry) product.cateogry = cateogry;
 
@@ -94,6 +97,90 @@ export const updateProduct = async (req, res) => {
     res.status(201).json(product);
   } catch (error) {
     console.error("Error while updating product");
-    res.status(500).json({ message: "Internal server Error" });
+    res.status(500).json({ message: "Internal server Error", err: error });
+  }
+};
+
+//orders func
+
+export const getAllOrders = async (_, res) => {
+  try {
+    const orders = await Order.find()
+      .populate("user", "name email")
+      .populate("orderItems.product")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Error getAllOrders in admin controller");
+    res.status(500).json({ message: "Internal Server Error", err: error });
+  }
+};
+export const updateOrderStatus = async (req, res) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
+
+  if (!["pending", "shipped", "deliverd"].includes(status)) {
+    return res.status(400).json({ error: "Invalid Status" });
+  }
+  Order.status = status;
+
+  if (!orderId) {
+    return res.status(400).json({ error: "Order not found" });
+  }
+
+  if (status == "shipped" && !Order.shippedAt) {
+    Order.shippedAt = new Date();
+  }
+  if (status == "deliverd" && !Order.deliveredAt) {
+    Order.deliveredAt = new Date();
+  }
+
+  await Order.save();
+
+  res
+    .status(200)
+    .json({ message: "Order status has been successfully updated" });
+};
+
+export const getAllCustomers = async (_, res) => {
+  try {
+    const customers = await User.find().sort({ createdAt: -1 });
+    res.status(200).json(customers);
+  } catch (error) {
+    console.error("Error fetching customers", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getDashbaordStats = async (_, res) => {
+  try {
+    const totalOrders = await Order.countDocuments();
+
+    const revenueResult = await Order.aggregate([
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$totalPrice" },
+        },
+      },
+    ]);
+
+    const totalRevenue = (await revenueResult[0]?.total) || 0;
+    const totalProducts = await product.countDocuments();
+    const totalCustomers = await User.countDocuments();
+
+    res
+      .status(200)
+      .json(
+        totalRevenue,
+        totalOrders,
+        totalRevenue,
+        totalProducts,
+        totalCustomers,
+      );
+  } catch (error) {
+    console.error("Error fetching customers", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };

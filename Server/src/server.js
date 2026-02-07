@@ -1,36 +1,48 @@
-import express from 'express';
-import { ENV } from '../config/env.js';
-import path from 'path';
-import { connectionDB } from '../config/db.js';
-import { clerkMiddleware } from '@clerk/express';
-import { serve } from 'inngest/express';
-import { functions, inngest } from '../config/innges.js';
+import express from "express";
+import { ENV } from "../config/env.js";
+import { connectionDB } from "../config/db.js";
+import { clerkMiddleware } from "@clerk/express";
+import { serve } from "inngest/express";
+import { functions, inngest } from "../config/innges.js";
 
-import adminRoute from '../routes/admin.route.js'
+import adminRoute from "../routes/admin.route.js";
+import usersRoute from "../routes/users.route.js";
+import ordersRoute from "../routes/orders.route.js";
+
+import productRoute from "../routes/products.route.js";
+import reviewsRoute from "../routes/reviews.route.js";
 
 const app = express();
-const __dirname = path.resolve();
 //clerk
 app.use(clerkMiddleware());
 
 app.use(express.json());
 
-
 //ingest
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
-
 // admin route
-app.use("/api/admin", adminRoute)
+app.use("/api/admin", adminRoute);
+//users route
+app.use("/api/users", usersRoute);
 
-app.get('/api', (req, res) => {
-  res.status(200).send('Welcome CyberCart');
+// orders route
+app.use("/api/orders", ordersRoute);
+
+//reviews
+app.use("/api/reviews", reviewsRoute);
+
+//products
+app.use("/api/products", productRoute);
+
+app.get("/api", (req, res) => {
+  res.status(200).send("Welcome CyberCart");
 });
 
 const startServer = async () => {
   await connectionDB();
   app.listen(ENV.PORT, () => {
-    console.log('Server Successfully start');
+    console.log("Server Successfully start");
   });
 };
 startServer();
