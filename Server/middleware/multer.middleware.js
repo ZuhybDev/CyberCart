@@ -8,22 +8,22 @@ const storage = multer.diskStorage({
   },
 });
 
-const filefilter = (req, file, cb) => {
+const fileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg| jpg|png|webp/;
   const extname = allowedTypes.test(
-    path.extname(file.originalname).toLocaleLowerCase()
+    path.extname(file.originalname).toLocaleLowerCase(),
   );
   const mimeType = allowedTypes.test(file.mimeType);
 
   if (extname && mimeType) {
     cb(null, true);
   } else {
-    cb(new Error("Only image files are allowed (jpeg, jpg, png.webp)"));
+    cb(new Error("Only image files are allowed (jpeg, jpg, png, webp)"));
   }
 };
 
 export const upload = multer({
   storage,
-  filefilter,
+  fileFilter,
   limits: { fileSize: 5 * 1024 * 1024 },
 });
