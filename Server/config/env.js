@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 export const ENV = {
   NODE_ENV: process.env.NODE_ENV || "development",
@@ -12,4 +12,5 @@ export const ENV = {
   CLOUDNARY_API_KEY: process.env.CLOUDNARY_API_KEY,
   CLOUDNARY_SECRET_KEY: process.env.CLOUDNARY_SECRET_KEY,
   CLOUDNARY_CLOUD_NAME: process.env.CLOUDNARY_CLOUD_NAME,
+  ADMIN_EMAIL: process.env.ADMIN_EMAIL,
 };
