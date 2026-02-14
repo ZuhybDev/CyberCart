@@ -54,7 +54,7 @@ export const getAllProducts = async (_, res) => {
     const allProducts = await product.find.sort({ createdAt: -1 });
     res.status(201).json(allProducts);
   } catch (error) {
-    res.status(500).json({ message: "Internal server Error" });
+    res.status(500).json({ message: "Internal server Error", err: error });
   }
 };
 export const updateProduct = async (req, res) => {
@@ -97,7 +97,7 @@ export const updateProduct = async (req, res) => {
     res.status(201).json(product);
   } catch (error) {
     console.error("Error while updating product");
-    res.status(500).json({ message: "Internal server Error" });
+    res.status(500).json({ message: "Internal server Error", err: error });
   }
 };
 
@@ -113,7 +113,7 @@ export const getAllOrders = async (_, res) => {
     res.status(200).json(orders);
   } catch (error) {
     console.error("Error getAllOrders in admin controller");
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error", err: error });
   }
 };
 export const updateOrderStatus = async (req, res) => {
@@ -148,7 +148,7 @@ export const getAllCustomers = async (_, res) => {
     const customers = await User.find().sort({ createdAt: -1 });
     res.status(200).json(customers);
   } catch (error) {
-    console.error("Error fetching customers", err);
+    console.error("Error fetching customers", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -177,10 +177,10 @@ export const getDashbaordStats = async (_, res) => {
         totalOrders,
         totalRevenue,
         totalProducts,
-        totalCustomers
+        totalCustomers,
       );
   } catch (error) {
-    console.error("Error fetching customers", err);
+    console.error("Error fetching customers", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

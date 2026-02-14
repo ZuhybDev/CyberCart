@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const orderItemSchema = new mongoose.Schema(
   {
     product: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
+      ref: "Product",
       required: true,
     },
     price: {
@@ -23,7 +23,7 @@ const orderItemSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const shippingAddressSchema = new mongoose.Schema(
@@ -53,14 +53,14 @@ const shippingAddressSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const orderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     clerkId: {
@@ -85,8 +85,8 @@ const orderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      eum: ['pending', 'shipped', 'delivered'],
-      default: 'pending',
+      enum: ["pending", "shipped", "delivered"],
+      default: "pending",
     },
     deliveredAt: {
       type: Date,
@@ -95,7 +95,7 @@ const orderSchema = new mongoose.Schema(
       type: Date,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-export const Order = mongoose.model('Order', orderSchema);
+export const Order = mongoose.model("Order", orderSchema);
