@@ -79,9 +79,6 @@ We welcome contributions. Please:
 
 Add a CONTRIBUTING.md in the repo to capture detailed guidelines.
 
-## License
-This project is [LICENSE NAME]. Replace this line with the actual license and include a `LICENSE` file in the repository.
-
 ## Contact
 Maintainer: ZuhybDev  
 Repository: [ZuhybDev/CyberCart](https://github.com/ZuhybDev/CyberCart)
